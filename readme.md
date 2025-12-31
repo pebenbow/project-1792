@@ -4,6 +4,10 @@
 
 This is meant to be a prototype Quarto dashboard that provides interactive and informative exploration of data relevant to the decision-makers and community members of Cabarrus County, North Carolina.
 
+## Why 1792?
+
+Cabarrus County was established by an act of the North Carolina legislature (the General Assembly) in December 1792, at which point it was formally carved out from Mecklenburg County. The title of this project is simply a reference to that event.
+
 ## About Me
 
 I am the James B. Duke Assistant Professor of the Practice in Data Science at Davidson College. I am a Cabarrus County native, having been born, raised, and educated in Concord. I attended Beverly Hills Elementary, Concord Middle, and Concord High before beginning my undergraduate studies at Davidson in 2003. I grew up in the First Presbyterian Church of Concord and gave back to my community as a member of BSA Troop 3 and the Tarheel Keystone Club.
