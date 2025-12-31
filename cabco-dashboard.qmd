@@ -1,0 +1,93 @@
+---
+title: "CabCo Dashboard"
+format: 
+  dashboard:
+    theme: materia
+    nav-buttons: [github]
+server: shiny
+---
+
+```{r}
+#| context: setup
+#| include: false
+
+# Load required libraries
+library(tidyverse)
+library(tidycensus)
+library(shiny)
+library(bslib)
+library(markdown)
+library(tmap)
+library(sf)
+library(sp)
+library(viridis)
+library(tigris)
+
+tmap_mode("view")
+
+my_palette <- rev(magma(8))[c(-1, -8)]
+
+vars <- load_variables(
+  year = 2020,
+  dataset = "pl"
+)
+
+census_demo <- get_decennial(
+  geography   = "block group",
+  # geography   = "county subdivision",
+  # geography   = "block",
+  year        = 2020,
+  county      = "Cabarrus",
+  state       = "NC",
+  table       = "P1",
+  summary_var = "P1_001N",
+  geometry    = TRUE
+)
+
+combined_df <- census_demo |>
+  left_join(vars, by = join_by(variable == name)) |> 
+  rename(c(
+    pop = value,
+    total_pop = summary_value
+  )) |>
+  mutate(pct = round((pop / total_pop) * 100,2)) |> 
+  filter(variable == "P1_004N")
+```
+
+
+
+# Dashboard
+
+## {.sidebar width="450px"}
+
+## Column {.tabset}
+
+```{r}
+#| title: Map
+
+tmapOutput("mapViz", height = "800px")
+```
+
+```{r}
+#| context: server
+
+output$mapViz <- renderTmap({
+  tm_shape(combined_df) + 
+    tm_polygons(
+      "pct", 
+      palette = my_palette,
+      alpha = 0.5,
+      popup.vars = c(
+        "Total population" = "total_pop",
+        "% of population" = "pct"
+      )
+    ) + 
+  tm_scale_bar(position = c("left", "bottom"))
+})
+```
+
+# About
+
+Lorem ipsum dolor sit amet, duis assum comprehensam eam ea, ad eam dicit melius. Sit habeo feugiat appellantur at, in voluptua adipiscing sed, cu singulis torquatos complectitur sea. Tota luptatum mei et, ne sea bonorum abhorreant. Quas conceptam temporibus vel et. Sed ne tacimates efficiendi, eu eam summo oratio accusamus. Quo an sonet dolor.
+
+Cu modus omnesque pri. Et facilis tractatos voluptatibus vis, usu civibus laboramus cu, elitr lobortis ius id. Duo ad dicit delectus verterem. Nam graeco officiis efficiantur no, velit habemus reprehendunt vis ei. Quando homero omittantur eam an. Ne est error albucius theophrastus, sit velit dolore tincidunt an.
